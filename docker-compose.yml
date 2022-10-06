@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+    database:
+        image: postgres
+        environment:
+            POSTGRES_DB: "database"
+            POSTGRES_USER: "postgres"
+            POSTGRES_PASSWORD: "postgres"
+    app:
+        build: .
+        command: >
+              sh -c "python manage.py migrate &&
+                     python manage.py runserver 0.0.0.0:8000"
+        volumes:
+            - ./djangoTestTask:/djangoTestTask
+        ports:
+            - '8000:8000'
+        depends_on:
+            - database
+
+volumes:
+    postgres_data:
